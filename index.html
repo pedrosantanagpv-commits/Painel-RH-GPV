@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Painel RH | GPV Associados</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <section class="login-screen" id="loginScreen">
+    <div class="login-brand">
+      <img src="/assets/logo-gpv-yellow.png" alt="GPV Associados" />
+      <span>GESTÃO DE CARREIRAS</span>
+    </div>
+    <div class="login-layout">
+      <div class="login-message">
+        <span class="eyebrow eyebrow-yellow">PAINEL INTERNO</span>
+        <h1>Gestão de vagas e candidaturas.</h1>
+        <p>Um ambiente exclusivo para o RH acompanhar oportunidades, candidatos e etapas dos processos seletivos.</p>
+      </div>
+      <div class="login-card">
+        <span class="eyebrow">ACESSO RESTRITO</span>
+        <h2>Entrar no painel</h2>
+        <p>Use as credenciais cadastradas para a equipe de RH.</p>
+        <form id="loginForm">
+          <div class="field"><label for="loginEmail">E-mail</label><input id="loginEmail" type="email" autocomplete="username" required /></div>
+          <div class="field"><label for="loginPassword">Senha</label><input id="loginPassword" type="password" autocomplete="current-password" required /></div>
+          <button class="btn btn-primary btn-block" id="loginButton" type="submit">Entrar</button>
+          <div class="form-message" id="loginMessage" role="status"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="app-shell hidden" id="appShell">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="#" data-view="dashboard">
+        <img src="/assets/logo-gpv-yellow.png" alt="GPV Associados" />
+        <span>Painel RH</span>
+      </a>
+      <nav class="side-nav">
+        <button class="nav-item active" type="button" data-view="dashboard"><span>▦</span> Dashboard</button>
+        <button class="nav-item" type="button" data-view="jobs"><span>◆</span> Vagas</button>
+        <button class="nav-item" type="button" data-view="applications"><span>●</span> Candidaturas</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar" id="sidebarAvatar">RH</div>
+          <div><strong id="sidebarUserName">Gestão RH</strong><span id="sidebarUserRole">Gestor RH</span></div>
+        </div>
+        <button class="logout-button" id="logoutButton" type="button">Sair</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Abrir menu">☰</button>
+        <div><span class="topbar-kicker">PORTAL DE CARREIRAS</span><h1 id="pageTitle">Visão geral</h1></div>
+        <a class="btn btn-soft" href="https://gpvassociados.com.br" target="_blank" rel="noopener noreferrer">Site GPV ↗</a>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="kpi-grid">
+          <article class="kpi-card"><span>Vagas ativas</span><strong id="kpiActiveJobs">0</strong><small>oportunidades públicas</small></article>
+          <article class="kpi-card"><span>Candidaturas</span><strong id="kpiApplications">0</strong><small>total recebido</small></article>
+          <article class="kpi-card"><span>Em análise</span><strong id="kpiAnalysis">0</strong><small>aguardando avaliação</small></article>
+          <article class="kpi-card"><span>Entrevistas</span><strong id="kpiInterviews">0</strong><small>em andamento</small></article>
+        </div>
+        <div class="dashboard-grid">
+          <section class="panel-card">
+            <div class="panel-heading"><div><span class="eyebrow">MOVIMENTO RECENTE</span><h2>Últimas candidaturas</h2></div><button class="text-button" type="button" data-view="applications">Ver todas →</button></div>
+            <div class="compact-list" id="recentApplications"><div class="empty-state">Carregando...</div></div>
+          </section>
+          <section class="panel-card panel-dark">
+            <span class="eyebrow eyebrow-yellow">ATALHO</span><h2>Nova oportunidade</h2>
+            <p>Cadastre uma vaga, defina requisitos e publique no portal em poucos passos.</p>
+            <button class="btn btn-primary" id="dashboardNewJob" type="button">+ Criar vaga</button>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="view-jobs">
+        <div class="view-toolbar">
+          <input id="jobAdminSearch" type="search" placeholder="Buscar vaga ou setor..." />
+          <select id="jobStatusFilter"><option value="">Todos os status</option><option value="ATIVA">Ativa</option><option value="RASCUNHO">Rascunho</option><option value="PAUSADA">Pausada</option><option value="ENCERRADA">Encerrada</option></select>
+          <button class="btn btn-primary" id="newJobButton" type="button">+ Nova vaga</button>
+        </div>
+        <div class="panel-card">
+          <div class="panel-heading"><div><span class="eyebrow">GESTÃO</span><h2>Vagas e oportunidades</h2></div><span class="result-count" id="jobsAdminCount">0 registros</span></div>
+          <div class="table-wrap"><table class="data-table"><thead><tr><th>Vaga</th><th>Local</th><th>Modelo</th><th>Status</th><th>Publicação</th><th></th></tr></thead><tbody id="jobsTableBody"></tbody></table></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-applications">
+        <div class="view-toolbar application-toolbar">
+          <input id="applicationSearch" type="search" placeholder="Buscar candidato, protocolo ou e-mail..." />
+          <select id="applicationJobFilter"><option value="">Todas as vagas</option></select>
+          <select id="applicationStatusFilter"><option value="">Todos os status</option><option value="RECEBIDA">Recebida</option><option value="EM ANÁLISE">Em análise</option><option value="ENTREVISTA">Entrevista</option><option value="APROVADO">Aprovado</option><option value="NÃO SELECIONADO">Não selecionado</option><option value="BANCO DE TALENTOS">Banco de talentos</option></select>
+        </div>
+        <div class="panel-card">
+          <div class="panel-heading"><div><span class="eyebrow">PROCESSOS SELETIVOS</span><h2>Candidaturas</h2></div><span class="result-count" id="applicationsCount">0 registros</span></div>
+          <div class="table-wrap"><table class="data-table"><thead><tr><th>Candidato</th><th>Vaga</th><th>Data</th><th>Status</th><th></th></tr></thead><tbody id="applicationsTableBody"></tbody></table></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="modal" id="jobModal">
+    <div class="modal-card">
+      <button class="modal-close" type="button" data-close-modal>×</button>
+      <div class="modal-heading"><span class="eyebrow">GESTÃO DE VAGAS</span><h2 id="jobModalTitle">Nova vaga</h2><p>Preencha as informações que serão exibidas no portal.</p></div>
+      <form id="jobForm">
+        <input type="hidden" id="jobId" />
+        <div class="form-grid">
+          <div class="field full"><label for="jobTitle">Título da vaga *</label><input id="jobTitle" required /></div>
+          <div class="field"><label for="jobSector">Setor *</label><input id="jobSector" required /></div>
+          <div class="field"><label for="jobQuantity">Quantidade</label><input id="jobQuantity" type="number" min="1" value="1" /></div>
+          <div class="field"><label for="jobCity">Cidade *</label><input id="jobCity" required /></div>
+          <div class="field"><label for="jobUf">UF *</label><input id="jobUf" maxlength="2" required /></div>
+          <div class="field"><label for="jobModality">Modalidade *</label><select id="jobModality" required><option>Presencial</option><option>Híbrido</option><option>Remoto</option></select></div>
+          <div class="field"><label for="jobContract">Contrato</label><input id="jobContract" placeholder="Ex.: CLT" /></div>
+          <div class="field"><label for="jobJourney">Jornada</label><input id="jobJourney" placeholder="Ex.: Integral" /></div>
+          <div class="field"><label for="jobStatus">Status *</label><select id="jobStatus" required><option value="RASCUNHO">Rascunho</option><option value="ATIVA">Ativa</option><option value="PAUSADA">Pausada</option><option value="ENCERRADA">Encerrada</option></select></div>
+          <div class="field full"><label for="jobAbout">Sobre a GPV</label><textarea id="jobAbout" rows="4"></textarea></div>
+          <div class="field full"><label for="jobResponsibilities">Responsabilidades</label><textarea id="jobResponsibilities" rows="6" placeholder="Uma responsabilidade por linha"></textarea></div>
+          <div class="field full"><label for="jobRequirements">Requisitos</label><textarea id="jobRequirements" rows="6" placeholder="Um requisito por linha"></textarea></div>
+          <div class="field full"><label for="jobDifferentials">Diferenciais</label><textarea id="jobDifferentials" rows="4" placeholder="Um diferencial por linha"></textarea></div>
+        </div>
+        <button class="btn btn-primary btn-block" id="saveJobButton" type="submit">Salvar vaga</button>
+        <div class="form-message" id="jobFormMessage"></div>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="applicationModal">
+    <div class="modal-card">
+      <button class="modal-close" type="button" data-close-modal>×</button>
+      <div class="candidate-header"><div class="candidate-avatar" id="candidateAvatar">C</div><div><span class="eyebrow">CANDIDATO</span><h2 id="candidateName">Nome do candidato</h2><p id="candidateJob">Vaga</p></div></div>
+      <div class="candidate-grid">
+        <section class="candidate-card"><h3>Contato</h3><dl class="detail-list"><div><dt>E-mail</dt><dd id="candidateEmail">—</dd></div><div><dt>WhatsApp</dt><dd id="candidatePhone">—</dd></div><div><dt>Local</dt><dd id="candidateLocation">—</dd></div><div><dt>Protocolo</dt><dd id="candidateProtocol">—</dd></div></dl></section>
+        <section class="candidate-card"><h3>Links</h3><div class="candidate-links"><a id="candidateResume" target="_blank" rel="noopener noreferrer">Abrir currículo ↗</a><a id="candidateLinkedin" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a id="candidatePortfolio" target="_blank" rel="noopener noreferrer">Portfólio ↗</a></div></section>
+        <section class="candidate-card full"><h3>Apresentação</h3><p id="candidatePresentation">—</p></section>
+        <section class="candidate-card full"><h3>Gestão do processo</h3><form id="applicationStatusForm"><input type="hidden" id="candidateId" /><div class="field"><label for="candidateStatus">Status</label><select id="candidateStatus"><option value="RECEBIDA">Recebida</option><option value="EM ANÁLISE">Em análise</option><option value="ENTREVISTA">Entrevista</option><option value="APROVADO">Aprovado</option><option value="NÃO SELECIONADO">Não selecionado</option><option value="BANCO DE TALENTOS">Banco de talentos</option></select></div><div class="field"><label for="candidateNotes">Observação interna</label><textarea id="candidateNotes" rows="4"></textarea></div><button class="btn btn-primary" id="saveApplicationStatus" type="submit">Salvar atualização</button><div class="form-message" id="candidateFormMessage"></div></form></section>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast"></div>
+  <script src="/js/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+{"name":"painel-rh-gpv","version":"1.0.0","private":true,"description":"Painel interno de gestão de carreiras GPV","scripts":{"dev":"vercel dev"},"engines":{"node":"20.x"}}
